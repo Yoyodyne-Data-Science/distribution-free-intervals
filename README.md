@@ -12,6 +12,10 @@ For our example, let's consider the time taken to complete some task. We'll imag
   <img width="600" src="images/task_completion_time_n_eq_5000.png">
 </p>
 
+The features I want to draw attention to in this plot are the following:
 
+- The distribution has a clear peak, somewhere around 8 mins in this example. This tells us that the task has a typical completion time associated with it, and a large number of tasks are completed in a window containing this peak
+- The distribution has a long tail. This tells us that, infrequently, tasks can take a lot longer to complete than expected. For example there might be some complication which means a particular task in our sample took longer to complete than it typically would.
+- The distribution only covers the positive half of the time axis. That is, tasks take a finite amount of tme to complete.
 
-We'd like to provide some statistic which describes how quickly the task is being completed. 
+This third point may seem trivial, but many distributions, including the normal distribution have support from -&#8734; to +&#8734;
