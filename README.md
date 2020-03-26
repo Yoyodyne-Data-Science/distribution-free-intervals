@@ -1,4 +1,4 @@
-![alt text](/images/yoyodyne_data_science_logo.png "Yoydyne Data Science")
+![alt text](./images/yoyodyne_data_science_logo.png "Yoydyne Data Science")
 
 # Distribution-free Tolerance Intervals
 
@@ -14,8 +14,16 @@ For our example, let's consider the time taken to complete some task. We'll imag
 
 The features I want to draw attention to in this plot are the following:
 
-- The distribution has a clear peak, somewhere around 8 mins in this example. This tells us that the task has a typical completion time associated with it, and a large number of tasks are completed in a window containing this peak
+- The distribution has a clear peak (it's somewhere around 8 mins in this example). This tells us that the task has a typical completion time associated with it, and a large number of tasks are completed in a window containing this peak
 - The distribution has a long tail. This tells us that, infrequently, tasks can take a lot longer to complete than expected. For example there might be some complication which means a particular task in our sample took longer to complete than it typically would.
-- The distribution only covers the positive half of the time axis. That is, tasks take a finite amount of tme to complete.
+- The distribution only covers the positive half of the time axis. That is, tasks take a finite amount of time to complete.
 
-This third point may seem trivial, but many distributions, including the normal distribution have support from -&#8734; to +&#8734;
+This third point may seem trivial, but many distributions, including the normal distribution have support from -&#8734; to +&#8734;, so we should always be wary when invoking them in such situations: the probability for completing a task in any time < 0 must equal 0. N.B. You'll notice in the notebook, that I generated this data by sampling from an Erlang distribution. I'll discuss this distribution a little later, but for now all that's important is that it generates data with the three properties listed above.
+
+### Task completion statistic
+
+Given the above data, we'd like to provide a statistic on the task completion time. Typically, given some sample, we'd calculate the mean and standard deviation and that would be that. Let's calculate these properties and overlay them on the plot above:
+
+<p align="center">
+  <img width="600" src="images/task_completion_time_n_eq_5000_withmean.png">
+</p>
