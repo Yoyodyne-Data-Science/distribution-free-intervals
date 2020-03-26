@@ -6,3 +6,12 @@ In this README and accompanying notebook I'll explain some functions I wrote for
 
 ## Example: Estimating the time taken to complete a task
 
+For our example, let's consider the time taken to complete some task. We'll imagine there's one worker (or a series of workers with identical competencies at completing the task) who completes a number of these tasks in a given time. We have at our disposal then a sample of task completion times, and this sample is taken from an *a priori* unkown distribution of task completion times. Although the exact pdf for task completion times for this task is not known to us, we know that, in general it will look something like this:
+
+<p align="center">
+  <img width="600" src="images/task_completion_time_n_eq_5000.png">
+</p>
+
+
+
+We'd like to provide some statistic which describes how quickly the task is being completed. 
