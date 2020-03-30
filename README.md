@@ -81,13 +81,13 @@ The method of calculating such tolerance intervals is described in great detail 
 As a point of notation, we define  *x*<sub>*i*</sub> as the *i*<sup>th</sup> sample randomly drawn from some distribution *P(x)*, or equivalently the *i*<sup>th</sup> measurement of some variable *x*. We differentiate this from *x*<sub>*(i)*</sub> which corresponds to the *i*<sup>th</sup> smallest value in our sample of *x*'s (see [order statistic](https://en.wikipedia.org/wiki/Order_statistic)). The tolerance interval containing at least a proportion &#946; of the sampled distribution from a sample size *n* is then given by:
 
 <p align="center">
-<img src="https://latex.codecogs.com/gif.latex?[T_{\beta}^-,T_{\beta}^&plus;]=[x_{(l)},x_{(u)}]" title="[T_{\beta}^-,T_{\beta}^+]=[x_{(l)},x_{(u)}]" />
+<img src="images/tol_int_def.gif" title="[T_{\beta}^-,T_{\beta}^+]=[x_{(l)},x_{(u)}]" />
 </p>
 
 where *l* and *u* are generally chosen symmetrically or nearly symmetrically within the ordered sample data to provide, if possible, the desired coverage probability. The coverage probability for this distribution-free tolerance interval (CPTI) procedure is then:
 
 <p align="center">
-<img src="https://latex.codecogs.com/gif.latex?\textup{CPTI}(n,&space;l,&space;u,&space;\beta)&space;=&space;\binom{n}{u-l-1}\beta^{u-l-1}(1-\beta)^{n-u&plus;l&plus;1}" title="\textup{CPTI}(n, l, u, \beta) = \binom{n}{u-l-1}\beta^{u-l-1}(1-\beta)^{n-u+l+1}" />
+<img src="images/coverage_prob.gif" title="\textup{CPTI}(n, l, u, \beta) = \binom{n}{u-l-1}\beta^{u-l-1}(1-\beta)^{n-u+l+1}" />
 </p>
 
 You can find the full derivation of this equation in the appendix of the aforementioned textbook. You'll notice that this is the pdf of the Binomial distribution, specifically the probability of *u-l-1* successes after *n* Bernoulli trials with probability of success &#946;. This allows us a hand-wavy justification of the above; *u-l-1* is the number of samples lying between *x*<sub>*(l)*</sub> and *x*<sub>*(u)*</sub>, so we're asking what's the probability that this many of our *n* samples lie within the tolerance interval, given that the probability of lying within the interval is just &#946;, i.e. the proportion of the distribution.
@@ -99,7 +99,7 @@ The formula above has a tendency to be too conservative, giving a CPTI higher th
 Earlier, we were discussing the importance of sample size in determining how confident we were in setting our intervals. The method above allows us to turn this question on its head and ask *What is the smallest sample size required to specify a tolerance interval which covers a given proportion of the distribution with a specified confidence?* Concretely, we find the answer to be the value of *n* which solves the following:
 
 <p align="center">
-<img src="https://latex.codecogs.com/gif.latex?1-\alpha=1-n\beta^{n-1}&plus;(n-1)\beta^n" title="1-\alpha=1-n\beta^{n-1}+(n-1)\beta^n" />
+<img src="images/smallest_n.gif" title="1-\alpha=1-n\beta^{n-1}+(n-1)\beta^n" />
 </p>
 
 where 100(1 - &#945;)% is a somewhat standard notation for confidence, and &#946; is the proportion of the distribution. For example, to obtain a 95% confidence interval to contain at least a proportion 0.99 of the distribution a minimum of n = 473 observations are needed. The code for calculating the minimum required number of samples is included in my [python functions](https://github.com/Yoyodyne-Data-Science/distribution-free-intervals/blob/master/dist_free_intrvls.py). Note that if the sampled data is too small to give a tolerance interval of the desired confidence, an error message is shown and an interval of [0,0] is returned.
@@ -126,6 +126,6 @@ Now we see a disparity between the quantiles and the calculated tolerance interv
 
 ## A word on the Erlang distribution
 
-As I mentioned, to generate the task time "data" above, I sampled from an [Erlang distribution](https://en.wikipedia.org/wiki/Erlang_distribution). Given that the problem at hand was concerned with task completion times, one might think that a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) could be invoked by framing the problem as "what's the probability of *k* tasks being completed in time *t*". However, the Poisson distribution is derived by assuming a sequence identical, independent of randomly occuring processes, with the probability of a single process occuring as a function of time being given by an exponential decay curve. This reasoning doesn't really fit for us, as we'd imagine that after completing one task, it will most likely take some time (e.g. the median task completion time) until the next is completed.
+As I mentioned, to generate the task time "data" above, I sampled from an [Erlang distribution](https://en.wikipedia.org/wiki/Erlang_distribution). Given that the problem at hand was concerned with task completion times, one might think that a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution) could be invoked by framing the problem as "what's the probability of *k* tasks being completed in time *t*". However, the Poisson distribution is derived by assuming a sequence of identical, independent, randomly occuring processes, with the probability of a single process occuring as a function of time being given by an exponential decay curve. This reasoning doesn't really fit for us, as we'd imagine that after completing one task, it will most likely take some time (e.g. the median task completion time) until the next is completed.
 
 Having said that, I can't give a good explanation of why an Erlang distribution makes sense to use here (though, see a super hand-wavy explanation in an answer [here](https://stats.stackexchange.com/questions/109566/which-distribution-for-modelling-duration-of-tasks)). In truth, any number of distributions (e.g. [log-normal](https://en.wikipedia.org/wiki/Log-normal_distribution), [Weibull](https://en.wikipedia.org/wiki/Weibull_distribution), [Gamma](https://en.wikipedia.org/wiki/Gamma_distribution)...) can be chosen to give similar looking results. My advice in general would be to make as few assumptions as possible about the underlying distribution you're sampling from, and to use the distribution-free methods described above and included in [this python code](https://github.com/Yoyodyne-Data-Science/distribution-free-intervals/blob/master/dist_free_intrvls.py) as opposed to making inferences based on assuming a specific distribution.
